@@ -57,7 +57,17 @@ Gerçek işi yapan Java uygulamalarıdır.
 Projenin tamamını bilgisayarında çalıştırmak için şu adımları izle:
 
 ### Adım 1: Hazırlık
-Bilgisayarında **Docker** ve **Node.js** kurulu olmalıdır.
+Bilgisayarınızda aşağıdaki araçların kurulu olması gerekmektedir. Eğer kurulu değilse linklere tıklayarak indirip kurabilirsiniz (Standart kurulum yeterlidir):
+
+1.  **Docker Desktop** (Backend servisleri için):
+    *   [İndir (Windows/Mac/Linux)](https://www.docker.com/products/docker-desktop/)
+    *   *Kurduktan sonra Docker'ı açıp arka planda çalıştığından emin olun.*
+
+2.  **Node.js** (Frontend için):
+    *   [İndir (LTS Sürümünü seçin)](https://nodejs.org/en/download/)
+
+3.  **Git** (Projeyi indirmek için):
+    *   [İndir](https://git-scm.com/downloads)
 
 ### Adım 2: Backend'i Başlat (Docker)
 Terminali (komut satırını) aç ve proje klasörüne gir. Şu komutu yaz:
