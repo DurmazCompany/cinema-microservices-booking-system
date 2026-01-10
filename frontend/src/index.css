@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: #f3f4f6;
+  /* Gray-100 typical for dashboards */
+}
+
+/* Base styles to ensure consistency if needed */
+h1 {
+  @apply text-4xl font-bold;
+}
