@@ -50,9 +50,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 if (jwtUtil.validateToken(jwt)) {
                     Claims claims = jwtUtil.getClaims(jwt);
-                    List<String> roles = (List<String>) claims.get("roles", List.class);
+
+                    // Safer role extraction
+                    List<String> roles = null;
+                    Object rolesObj = claims.get("roles");
+                    if (rolesObj instanceof List) {
+                        roles = (List<String>) rolesObj;
+                    } else {
+                        roles = Collections.emptyList();
+                    }
+
                     List<SimpleGrantedAuthority> authorities;
-                    if (roles == null) {
+                    if (roles == null || roles.isEmpty()) {
                         authorities = Collections.emptyList();
                     } else {
                         authorities = roles.stream()
@@ -70,7 +79,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         } catch (Exception e) {
-            // Invalid token
+            // Log the error for debugging (visible in Render logs)
+            System.err.println("JWT Authentication Failed: " + e.getMessage());
+            e.printStackTrace();
         }
         filterChain.doFilter(request, response);
     }
