@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { config } from '../config';
-import api from '../api/axios';
+import { bookingApi } from '../api/axios';
 import Loading from '../components/Loading';
 
 interface Booking {
@@ -22,8 +21,7 @@ export default function MyBookings() {
 
     const fetchBookings = async () => {
         try {
-            const url = `${config.getServiceUrl('booking')}/bookings/me`;
-            const response = await api.get(url);
+            const response = await bookingApi.get('/api/bookings/me');
             setBookings(response.data);
         } catch (err) {
             setError('Failed to load bookings.');

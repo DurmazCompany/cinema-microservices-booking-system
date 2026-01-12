@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { config } from '../config';
-import api from '../api/axios';
+import { seatApi, bookingApi } from '../api/axios';
 import Loading from '../components/Loading';
 
 interface Seat {
@@ -25,8 +24,7 @@ export default function Seats() {
 
     const fetchSeats = async () => {
         try {
-            const url = `${config.getServiceUrl('seat')}/seats/${showtimeId}`;
-            const response = await api.get(url);
+            const response = await seatApi.get(`/api/seats/${showtimeId}`);
             // Ensure seats are sorted
             const sortedSeats = (response.data as Seat[]).sort((a, b) => a.seatNumber - b.seatNumber);
             setSeats(sortedSeats);
@@ -43,8 +41,7 @@ export default function Seats() {
 
         try {
             // Booking Service URL
-            const url = `${config.getServiceUrl('booking')}/bookings`;
-            await api.post(url, {
+            await bookingApi.post('/api/bookings', {
                 showtimeId: Number(showtimeId),
                 seatNumber: selectedSeat
             });

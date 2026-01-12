@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { config } from '../config';
-import api from '../api/axios';
+import { catalogApi } from '../api/axios';
 import Loading from '../components/Loading';
 
 interface Showtime {
@@ -26,8 +25,7 @@ export default function Showtimes() {
 
     const fetchShowtimes = async () => {
         try {
-            const url = `${config.getServiceUrl('catalog')}/showtimes`;
-            const response = await api.get(url);
+            const response = await catalogApi.get('/api/showtimes');
             setShowtimes(response.data);
         } catch (err: any) {
             const errorMessage = err.response?.status
