@@ -6,6 +6,7 @@ services:
   # Eureka Server (Service Discovery)
   - type: web
     name: eureka-server
+    runtime: docker
     rootDir: eureka-server
     buildCommand: mvn clean package -DskipTests
     startCommand: java -jar target/*.jar
@@ -17,6 +18,7 @@ services:
   # Config Server (Centralized Configuration)
   - type: web
     name: config-server
+    runtime: docker
     rootDir: .
     buildCommand: mvn -f config-server/pom.xml clean package -DskipTests
     startCommand: java -jar config-server/target/*.jar
@@ -36,6 +38,7 @@ services:
   # User Service
   - type: web
     name: user-service
+    runtime: docker
     rootDir: user-service
     buildCommand: mvn clean package -DskipTests
     startCommand: java -Dspring.datasource.url=jdbc:postgresql://$DB_HOST:$DB_PORT/$DB_NAME -jar target/*.jar
@@ -71,6 +74,7 @@ services:
   # Catalog Service
   - type: web
     name: catalog-service
+    runtime: docker
     rootDir: catalog-service
     buildCommand: mvn clean package -DskipTests
     startCommand: java -Dspring.datasource.url=jdbc:postgresql://$DB_HOST:$DB_PORT/$DB_NAME -jar target/*.jar
@@ -106,6 +110,7 @@ services:
   # Seat Service
   - type: web
     name: seat-service
+    runtime: docker
     rootDir: seat-service
     buildCommand: mvn clean package -DskipTests
     startCommand: java -Dspring.datasource.url=jdbc:postgresql://$DB_HOST:$DB_PORT/$DB_NAME -jar target/*.jar
@@ -141,6 +146,7 @@ services:
   # Booking Service
   - type: web
     name: booking-service
+    runtime: docker
     rootDir: booking-service
     buildCommand: mvn clean package -DskipTests
     startCommand: java -Dspring.datasource.url=jdbc:postgresql://$DB_HOST:$DB_PORT/$DB_NAME -jar target/*.jar
