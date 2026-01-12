@@ -7,7 +7,7 @@ services:
   - type: web
     name: eureka-server
     runtime: java
-    context: eureka-server
+    rootDir: eureka-server
     buildCommand: mvn clean package -DskipTests
     startCommand: java -jar target/*.jar
     envVars:
@@ -19,7 +19,7 @@ services:
   - type: web
     name: config-server
     runtime: java
-    context: .
+    rootDir: .
     buildCommand: mvn -f config-server/pom.xml clean package -DskipTests
     startCommand: java -jar config-server/target/*.jar
     envVars:
@@ -39,7 +39,7 @@ services:
   - type: web
     name: user-service
     runtime: java
-    context: user-service
+    rootDir: user-service
     buildCommand: mvn clean package -DskipTests
     startCommand: java -Dspring.datasource.url=jdbc:postgresql://$DB_HOST:$DB_PORT/$DB_NAME -jar target/*.jar
     envVars:
@@ -75,7 +75,7 @@ services:
   - type: web
     name: catalog-service
     runtime: java
-    context: catalog-service
+    rootDir: catalog-service
     buildCommand: mvn clean package -DskipTests
     startCommand: java -Dspring.datasource.url=jdbc:postgresql://$DB_HOST:$DB_PORT/$DB_NAME -jar target/*.jar
     envVars:
@@ -111,7 +111,7 @@ services:
   - type: web
     name: seat-service
     runtime: java
-    context: seat-service
+    rootDir: seat-service
     buildCommand: mvn clean package -DskipTests
     startCommand: java -Dspring.datasource.url=jdbc:postgresql://$DB_HOST:$DB_PORT/$DB_NAME -jar target/*.jar
     envVars:
@@ -147,7 +147,7 @@ services:
   - type: web
     name: booking-service
     runtime: java
-    context: booking-service
+    rootDir: booking-service
     buildCommand: mvn clean package -DskipTests
     startCommand: java -Dspring.datasource.url=jdbc:postgresql://$DB_HOST:$DB_PORT/$DB_NAME -jar target/*.jar
     envVars:
@@ -186,7 +186,7 @@ services:
   - type: web
     name: cinema-frontend
     runtime: static
-    context: frontend
+    rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
     routes:
