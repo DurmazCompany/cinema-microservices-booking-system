@@ -167,34 +167,7 @@ services:
       - key: SPRING_CONFIG_IMPORT
         value: optional:configserver:http://config-server:8888/
     healthCheckPath: /actuator/health
-    envVars:
-      - key: SERVER_PORT
-        value: 8084
-      - key: DB_HOST
-        fromDatabase:
-          name: cinema-db
-          property: host
-      - key: DB_PORT
-        fromDatabase:
-          name: cinema-db
-          property: port
-      - key: DB_NAME
-        fromDatabase:
-          name: cinema-db
-          property: database
-      - key: SPRING_DATASOURCE_USERNAME
-        fromDatabase:
-          name: cinema-db
-          property: user
-      - key: SPRING_DATASOURCE_PASSWORD
-        fromDatabase:
-          name: cinema-db
-          property: password
-      - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
-        value: http://eureka-server:8761/eureka/
-      - key: SPRING_CONFIG_IMPORT
-        value: optional:configserver:http://config-server:8888/
-    healthCheckPath: /actuator/health
+
 
   # ---------------------------------------------------
   # 3. FRONTEND
