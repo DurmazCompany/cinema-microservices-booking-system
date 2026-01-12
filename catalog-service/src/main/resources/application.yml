@@ -17,7 +17,7 @@ spring:
       hibernate:
         format_sql: true
 jwt:
-  secret: "${JWT_SECRET:404E63t52V8k5AV364K5dcV4Q83J4k4e6372c3t4w6k4p2}"
+  secret: "${JWT_SECRET:bXlTdXBlclNlY3JldEtVeUZvckNpbmVtYUFwcDEyMzQ1Njc4OTA=}"
 eureka:
   client:
     service-url:
