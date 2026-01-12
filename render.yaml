@@ -180,7 +180,6 @@ services:
   
   - type: web
     name: cinema-frontend
-
     runtime: static
     rootDir: frontend
     buildCommand: npm install && npm run build
@@ -189,27 +188,13 @@ services:
       - type: rewrite
         source: /**
         destination: /index.html
-    envVars:
-      - key: VITE_USER_SERVICE_URL
-        fromService:
-          type: web
-          name: user-service
-          property: host
-      - key: VITE_CATALOG_SERVICE_URL
-        fromService:
-          type: web
-          name: catalog-service
-          property: host
-      - key: VITE_SEAT_SERVICE_URL
-        fromService:
-          type: web
-          name: seat-service
-          property: host
-      - key: VITE_BOOKING_SERVICE_URL
-        fromService:
-          type: web
-          name: booking-service
-          property: host
+    # NOTE: Environment variables must be set manually in Render Dashboard
+    # because static sites need public URLs, not internal hostnames.
+    # Required variables:
+    #   VITE_USER_SERVICE_URL (e.g., https://user-service-xyz.onrender.com)
+    #   VITE_CATALOG_SERVICE_URL
+    #   VITE_SEAT_SERVICE_URL
+    #   VITE_BOOKING_SERVICE_URL
 
 databases:
   - name: cinema-db
