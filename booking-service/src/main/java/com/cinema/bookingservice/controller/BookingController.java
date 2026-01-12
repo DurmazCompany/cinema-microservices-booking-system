@@ -56,10 +56,11 @@ public class BookingController {
         try {
             boolean valid = jwtUtil.validateToken(token);
             String username = jwtUtil.extractUsername(token);
-            return ResponseEntity.ok("Version: v9-DIRECT | Token is VALID. Username: " + username);
+            return ResponseEntity.ok("Version: v10-SSLFIX | Token is VALID. Username: " + username);
         } catch (Exception e) {
             return ResponseEntity.ok(
-                    "Version: v9-DIRECT | Token is INVALID. Error: " + e.getClass().getName() + " - " + e.getMessage());
+                    "Version: v10-SSLFIX | Token is INVALID. Error: " + e.getClass().getName() + " - "
+                            + e.getMessage());
         }
     }
 }

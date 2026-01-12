@@ -35,10 +35,9 @@ public class BookingService {
 
     private final PaymentMock paymentMock;
 
-    // Use internal Render URLs with correct ports (defined in render.yaml)
-    // Catalog Service: 8082, Seat Service: 8083
-    private static final String CATALOG_SERVICE_URL = "http://catalog-service:8082/showtimes";
-    private static final String SEAT_SERVICE_URL = "http://seat-service:8083/seats";
+    // Use Public URLs (SSL Bypassed) because internal DNS failed
+    private static final String CATALOG_SERVICE_URL = "https://catalog-service-msei.onrender.com/showtimes";
+    private static final String SEAT_SERVICE_URL = "https://seat-service-1qck.onrender.com/seats";
 
     public List<Booking> getUserBookings(Long userId) {
         return bookingRepository.findByUserId(userId);
