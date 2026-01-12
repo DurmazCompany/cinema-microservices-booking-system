@@ -162,11 +162,16 @@ services:
   # 3. FRONTEND
   # ---------------------------------------------------
   
-  - type: static
+  - type: web
     name: cinema-frontend
+    env: static
     context: frontend
     buildCommand: npm install && npm run build
-    publishDir: dist
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /**
+        destination: /index.html
     envVars:
       - key: VITE_USER_SERVICE_URL
         fromService:
