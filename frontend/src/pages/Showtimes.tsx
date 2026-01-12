@@ -26,13 +26,20 @@ export default function Showtimes() {
     const fetchShowtimes = async () => {
         try {
             const response = await catalogApi.get('/showtimes');
-            setShowtimes(response.data);
+            console.log('API Response:', response); // Debug log
+            if (Array.isArray(response.data)) {
+                setShowtimes(response.data);
+            } else {
+                console.error('API returned non-array data:', response.data);
+                setShowtimes([]);
+                setError('Received invalid data format from server.');
+            }
         } catch (err: any) {
+            console.error('Fetch error:', err);
             const errorMessage = err.response?.status
                 ? `Error ${err.response.status}: ${err.response.data?.message || err.message}`
                 : `Network Error: ${err.message}. Check console.`;
             setError(errorMessage);
-            console.error(err);
         } finally {
             setLoading(false);
         }
