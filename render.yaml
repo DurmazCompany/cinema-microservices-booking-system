@@ -6,6 +6,7 @@ services:
   # Eureka Server (Service Discovery)
   - type: web
     name: eureka-server
+    plan: free
     runtime: docker
     rootDir: eureka-server
     envVars:
@@ -16,6 +17,7 @@ services:
   # Config Server (Centralized Configuration)
   - type: web
     name: config-server
+    plan: free
     runtime: docker
     rootDir: .
     dockerfilePath: ./config-server/Dockerfile
@@ -35,6 +37,7 @@ services:
   # User Service
   - type: web
     name: user-service
+    plan: free
     runtime: docker
     rootDir: user-service
     envVars:
@@ -69,6 +72,7 @@ services:
   # Catalog Service
   - type: web
     name: catalog-service
+    plan: free
     runtime: docker
     rootDir: catalog-service
     envVars:
@@ -103,6 +107,7 @@ services:
   # Seat Service
   - type: web
     name: seat-service
+    plan: free
     runtime: docker
     rootDir: seat-service
     envVars:
@@ -137,6 +142,7 @@ services:
   # Booking Service
   - type: web
     name: booking-service
+    plan: free
     runtime: docker
     rootDir: booking-service
     envVars:
@@ -168,13 +174,13 @@ services:
         value: optional:configserver:http://config-server:8888/
     healthCheckPath: /actuator/health
 
-
   # ---------------------------------------------------
   # 3. FRONTEND
   # ---------------------------------------------------
   
   - type: web
     name: cinema-frontend
+    plan: free
     runtime: static
     rootDir: frontend
     buildCommand: npm install && npm run build
