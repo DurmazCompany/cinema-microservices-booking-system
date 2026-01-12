@@ -45,10 +45,20 @@ services:
     envVars:
       - key: SERVER_PORT
         value: 8085
-      - key: SPRING_DATASOURCE_URL
+      - key: DB_HOST
         fromDatabase:
           name: cinema-db
-          property: connectionString
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: cinema-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: cinema-db
+          property: database
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: cinema-db
@@ -58,19 +68,9 @@ services:
           name: cinema-db
           property: password
       - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
-        fromService:
-          type: web
-          name: eureka-server
-          property: host
-          envVarKey: EUREKA_HOST
-        value: http://${EUREKA_HOST}:8761/eureka/
+        value: http://eureka-server:8761/eureka/
       - key: SPRING_CONFIG_IMPORT
-        fromService:
-          type: web
-          name: config-server
-          property: host
-          envVarKey: CONFIG_HOST
-        value: optional:configserver:http://${CONFIG_HOST}:8888/
+        value: optional:configserver:http://config-server:8888/
     healthCheckPath: /actuator/health
 
   # Catalog Service
@@ -83,10 +83,20 @@ services:
     envVars:
       - key: SERVER_PORT
         value: 8082
-      - key: SPRING_DATASOURCE_URL
+      - key: DB_HOST
         fromDatabase:
           name: cinema-db
-          property: connectionString
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: cinema-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: cinema-db
+          property: database
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: cinema-db
@@ -97,7 +107,6 @@ services:
           property: password
       - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
         value: http://eureka-server:8761/eureka/ 
-        # Note: Render allows internal DNS by service name.
       - key: SPRING_CONFIG_IMPORT
         value: optional:configserver:http://config-server:8888/
     healthCheckPath: /actuator/health
@@ -112,10 +121,20 @@ services:
     envVars:
       - key: SERVER_PORT
         value: 8083
-      - key: SPRING_DATASOURCE_URL
+      - key: DB_HOST
         fromDatabase:
           name: cinema-db
-          property: connectionString
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: cinema-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: cinema-db
+          property: database
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: cinema-db
@@ -140,10 +159,20 @@ services:
     envVars:
       - key: SERVER_PORT
         value: 8084
-      - key: SPRING_DATASOURCE_URL
+      - key: DB_HOST
         fromDatabase:
           name: cinema-db
-          property: connectionString
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: cinema-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: cinema-db
+          property: database
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: cinema-db
