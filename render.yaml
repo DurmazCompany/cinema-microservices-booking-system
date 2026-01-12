@@ -6,7 +6,6 @@ services:
   # Eureka Server (Service Discovery)
   - type: web
     name: eureka-server
-    runtime: java
     rootDir: eureka-server
     buildCommand: mvn clean package -DskipTests
     startCommand: java -jar target/*.jar
@@ -18,7 +17,6 @@ services:
   # Config Server (Centralized Configuration)
   - type: web
     name: config-server
-    runtime: java
     rootDir: .
     buildCommand: mvn -f config-server/pom.xml clean package -DskipTests
     startCommand: java -jar config-server/target/*.jar
@@ -38,7 +36,6 @@ services:
   # User Service
   - type: web
     name: user-service
-    runtime: java
     rootDir: user-service
     buildCommand: mvn clean package -DskipTests
     startCommand: java -Dspring.datasource.url=jdbc:postgresql://$DB_HOST:$DB_PORT/$DB_NAME -jar target/*.jar
@@ -74,7 +71,6 @@ services:
   # Catalog Service
   - type: web
     name: catalog-service
-    runtime: java
     rootDir: catalog-service
     buildCommand: mvn clean package -DskipTests
     startCommand: java -Dspring.datasource.url=jdbc:postgresql://$DB_HOST:$DB_PORT/$DB_NAME -jar target/*.jar
@@ -110,7 +106,6 @@ services:
   # Seat Service
   - type: web
     name: seat-service
-    runtime: java
     rootDir: seat-service
     buildCommand: mvn clean package -DskipTests
     startCommand: java -Dspring.datasource.url=jdbc:postgresql://$DB_HOST:$DB_PORT/$DB_NAME -jar target/*.jar
@@ -146,7 +141,6 @@ services:
   # Booking Service
   - type: web
     name: booking-service
-    runtime: java
     rootDir: booking-service
     buildCommand: mvn clean package -DskipTests
     startCommand: java -Dspring.datasource.url=jdbc:postgresql://$DB_HOST:$DB_PORT/$DB_NAME -jar target/*.jar
@@ -198,22 +192,22 @@ services:
         fromService:
           type: web
           name: user-service
-          property: url
+          property: host
       - key: VITE_CATALOG_SERVICE_URL
         fromService:
           type: web
           name: catalog-service
-          property: url
+          property: host
       - key: VITE_SEAT_SERVICE_URL
         fromService:
           type: web
           name: seat-service
-          property: url
+          property: host
       - key: VITE_BOOKING_SERVICE_URL
         fromService:
           type: web
           name: booking-service
-          property: url
+          property: host
 
 databases:
   - name: cinema-db
