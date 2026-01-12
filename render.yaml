@@ -193,7 +193,7 @@ services:
   
   - type: web
     name: cinema-frontend
-    env: static
+    runtime: static
     context: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
