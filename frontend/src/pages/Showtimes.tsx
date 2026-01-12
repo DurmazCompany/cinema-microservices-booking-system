@@ -25,7 +25,7 @@ export default function Showtimes() {
 
     const fetchShowtimes = async () => {
         try {
-            const response = await catalogApi.get('/api/showtimes');
+            const response = await catalogApi.get('/showtimes');
             setShowtimes(response.data);
         } catch (err: any) {
             const errorMessage = err.response?.status
