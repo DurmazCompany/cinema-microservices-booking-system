@@ -49,9 +49,9 @@ public class BookingService {
         try {
             restTemplate.getForObject(CATALOG_SERVICE_URL + "/" + showtimeId + "/exists", Map.class);
         } catch (Exception e) {
-            String msg = "Catalog check failed: " + e.getMessage();
-            log.error(msg, e);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, msg);
+            String validationError = "Validation Failed for Showtime ID " + showtimeId + ": " + e.getMessage();
+            System.err.println(validationError); // Log to console
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, validationError);
         }
 
         // 2. Lock Seat (Seat Service)
