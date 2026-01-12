@@ -35,8 +35,10 @@ public class BookingService {
 
     private final PaymentMock paymentMock;
 
-    private static final String CATALOG_SERVICE_URL = "https://catalog-service-msei.onrender.com/showtimes";
-    private static final String SEAT_SERVICE_URL = "https://seat-service-1qck.onrender.com/seats";
+    // Use internal Render URLs with correct ports (defined in render.yaml)
+    // Catalog Service: 8082, Seat Service: 8083
+    private static final String CATALOG_SERVICE_URL = "http://catalog-service:8082/showtimes";
+    private static final String SEAT_SERVICE_URL = "http://seat-service:8083/seats";
 
     public List<Booking> getUserBookings(Long userId) {
         return bookingRepository.findByUserId(userId);
@@ -45,20 +47,38 @@ public class BookingService {
     @Transactional
     public Booking createBooking(Long showtimeId, Integer seatNumber, Long userId) {
         // ... (Catalog and Lock Logic remain same) ...
+
+        HttpHeaders headers = new HttpHeaders();
+        String token = request.getHeader("Authorization");
+        headers.set("Authorization", token);
+        HttpEntity<Void> headersEntity = new HttpEntity<>(headers);
+
         // 1. Check if showtime exists (Catalog Service)
         try {
-            restTemplate.getForObject(CATALOG_SERVICE_URL + "/" + showtimeId + "/exists", Map.class);
+            // Fix: Add JWT token to Catalog Service call just in case
+            // Fix: Verify the boolean result!
+            ResponseEntity<Map> response = restTemplate.exchange(
+                    CATALOG_SERVICE_URL + "/" + showtimeId + "/exists",
+                    HttpMethod.GET,
+                    headersEntity,
+                    Map.class);
+
+            Map<String, Boolean> result = response.getBody();
+            if (result == null || !Boolean.TRUE.equals(result.get("exists"))) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "Showtime ID " + showtimeId + " not found in Catalog");
+            }
         } catch (Exception e) {
-            String validationError = "Validation Failed for Showtime ID " + showtimeId + ": " + e.getMessage();
-            System.err.println(validationError); // Log to console
+            String validationError = "Catalog check failed for ID " + showtimeId + ": " + e.getMessage();
+            System.err.println(validationError);
+            // If it's already a ResponseStatusException (manual throw above), rethrow it
+            if (e instanceof ResponseStatusException) {
+                throw (ResponseStatusException) e;
+            }
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, validationError);
         }
 
         // 2. Lock Seat (Seat Service)
-        HttpHeaders headers = new HttpHeaders();
-        String token = request.getHeader("Authorization");
-        headers.set("Authorization", token);
-
         Map<String, Object> lockRequest = Map.of("seatNumber", seatNumber, "userId", userId);
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(lockRequest, headers);
 
