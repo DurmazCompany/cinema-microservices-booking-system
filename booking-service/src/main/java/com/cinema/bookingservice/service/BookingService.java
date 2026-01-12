@@ -35,8 +35,8 @@ public class BookingService {
 
     private final PaymentMock paymentMock;
 
-    private static final String CATALOG_SERVICE_URL = "http://catalog-service/showtimes";
-    private static final String SEAT_SERVICE_URL = "http://seat-service/seats";
+    private static final String CATALOG_SERVICE_URL = "https://catalog-service-msei.onrender.com/showtimes";
+    private static final String SEAT_SERVICE_URL = "https://seat-service-1qck.onrender.com/seats";
 
     public List<Booking> getUserBookings(Long userId) {
         return bookingRepository.findByUserId(userId);
@@ -49,21 +49,23 @@ public class BookingService {
         try {
             restTemplate.getForObject(CATALOG_SERVICE_URL + "/" + showtimeId + "/exists", Map.class);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Showtime does not exist or Catalog Service unavailable");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Showtime does not exist or Catalog Service unavailable");
         }
 
         // 2. Lock Seat (Seat Service)
         HttpHeaders headers = new HttpHeaders();
         String token = request.getHeader("Authorization");
         headers.set("Authorization", token);
-        
+
         Map<String, Object> lockRequest = Map.of("seatNumber", seatNumber, "userId", userId);
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(lockRequest, headers);
 
         try {
             restTemplate.postForEntity(SEAT_SERVICE_URL + "/" + showtimeId + "/lock", entity, Void.class);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Seat not available or locking failed: " + e.getMessage());
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "Seat not available or locking failed: " + e.getMessage());
         }
 
         // 3. Process Payment
@@ -76,7 +78,7 @@ public class BookingService {
                 .createdAt(LocalDateTime.now())
                 .status(BookingStatus.PENDING)
                 .build();
-        
+
         bookingRepository.save(booking);
 
         Map<String, Object> seatActionRequest = Map.of("seatNumber", seatNumber);
@@ -85,7 +87,8 @@ public class BookingService {
         if (paymentSuccess) {
             // 4. Confirm Seat
             try {
-                restTemplate.postForEntity(SEAT_SERVICE_URL + "/" + showtimeId + "/confirm", seatActionEntity, Void.class);
+                restTemplate.postForEntity(SEAT_SERVICE_URL + "/" + showtimeId + "/confirm", seatActionEntity,
+                        Void.class);
                 booking.setStatus(BookingStatus.CONFIRMED);
             } catch (Exception e) {
                 booking.setStatus(BookingStatus.CANCELLED);
@@ -94,7 +97,8 @@ public class BookingService {
         } else {
             // 4. Payment Fail -> Release Seat
             try {
-                restTemplate.postForEntity(SEAT_SERVICE_URL + "/" + showtimeId + "/release", seatActionEntity, Void.class);
+                restTemplate.postForEntity(SEAT_SERVICE_URL + "/" + showtimeId + "/release", seatActionEntity,
+                        Void.class);
             } catch (Exception e) {
                 log.error("Failed to release seat after payment failure", e);
             }
