@@ -41,7 +41,7 @@ services:
     runtime: java
     context: user-service
     buildCommand: mvn clean package -DskipTests
-    startCommand: java -jar target/*.jar
+    startCommand: java -Dspring.datasource.url=jdbc:postgresql://$DB_HOST:$DB_PORT/$DB_NAME -jar target/*.jar
     envVars:
       - key: SERVER_PORT
         value: 8085
@@ -57,8 +57,6 @@ services:
         fromDatabase:
           name: cinema-db
           property: database
-      - key: SPRING_DATASOURCE_URL
-        value: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: cinema-db
@@ -79,7 +77,7 @@ services:
     runtime: java
     context: catalog-service
     buildCommand: mvn clean package -DskipTests
-    startCommand: java -jar target/*.jar
+    startCommand: java -Dspring.datasource.url=jdbc:postgresql://$DB_HOST:$DB_PORT/$DB_NAME -jar target/*.jar
     envVars:
       - key: SERVER_PORT
         value: 8082
@@ -95,8 +93,6 @@ services:
         fromDatabase:
           name: cinema-db
           property: database
-      - key: SPRING_DATASOURCE_URL
-        value: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: cinema-db
@@ -117,7 +113,7 @@ services:
     runtime: java
     context: seat-service
     buildCommand: mvn clean package -DskipTests
-    startCommand: java -jar target/*.jar
+    startCommand: java -Dspring.datasource.url=jdbc:postgresql://$DB_HOST:$DB_PORT/$DB_NAME -jar target/*.jar
     envVars:
       - key: SERVER_PORT
         value: 8083
@@ -133,8 +129,6 @@ services:
         fromDatabase:
           name: cinema-db
           property: database
-      - key: SPRING_DATASOURCE_URL
-        value: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: cinema-db
@@ -155,7 +149,7 @@ services:
     runtime: java
     context: booking-service
     buildCommand: mvn clean package -DskipTests
-    startCommand: java -jar target/*.jar
+    startCommand: java -Dspring.datasource.url=jdbc:postgresql://$DB_HOST:$DB_PORT/$DB_NAME -jar target/*.jar
     envVars:
       - key: SERVER_PORT
         value: 8084
@@ -171,8 +165,6 @@ services:
         fromDatabase:
           name: cinema-db
           property: database
-      - key: SPRING_DATASOURCE_URL
-        value: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: cinema-db
