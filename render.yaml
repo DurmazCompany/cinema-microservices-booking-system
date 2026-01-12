@@ -99,9 +99,7 @@ services:
           name: cinema-db
           property: password
       - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
-        value: http://eureka-server:8761/eureka/ 
-      - key: SPRING_CONFIG_IMPORT
-        value: optional:configserver:http://config-server:8888/
+        value: http://eureka-server:8761/eureka/
     healthCheckPath: /actuator/health
 
   # Seat Service

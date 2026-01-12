@@ -36,4 +36,9 @@ public class ShowtimeController {
     public ResponseEntity<Map<String, Boolean>> checkShowtimeExists(@PathVariable Long id) {
         return ResponseEntity.ok(Map.of("exists", catalogService.showtimeExists(id)));
     }
+
+    @GetMapping("/test-deploy")
+    public ResponseEntity<String> testDeploy() {
+        return ResponseEntity.ok("Deployment Working!");
+    }
 }
