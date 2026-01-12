@@ -6,6 +6,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
 @EnableDiscoveryClient
+// Trigger redeploy to recover stalled service
 public class Application {
 
     public static void main(String[] args) {
