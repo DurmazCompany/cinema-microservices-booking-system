@@ -49,8 +49,9 @@ public class BookingService {
         try {
             restTemplate.getForObject(CATALOG_SERVICE_URL + "/" + showtimeId + "/exists", Map.class);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Showtime does not exist or Catalog Service unavailable");
+            String msg = "Catalog check failed: " + e.getMessage();
+            log.error(msg, e);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, msg);
         }
 
         // 2. Lock Seat (Seat Service)
@@ -64,8 +65,9 @@ public class BookingService {
         try {
             restTemplate.postForEntity(SEAT_SERVICE_URL + "/" + showtimeId + "/lock", entity, Void.class);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT,
-                    "Seat not available or locking failed: " + e.getMessage());
+            String msg = "Seat locking failed: " + e.getMessage();
+            log.error(msg, e);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, msg);
         }
 
         // 3. Process Payment
