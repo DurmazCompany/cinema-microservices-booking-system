@@ -256,5 +256,5 @@ Temporary Items
 .docker/
 
 # Spring
-config-repo/
+
 application.yml

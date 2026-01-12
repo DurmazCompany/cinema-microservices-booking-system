@@ -1,0 +1,197 @@
+services:
+  # ---------------------------------------------------
+  # 1. INFRASTRUCTURE SERVICES
+  # ---------------------------------------------------
+  
+  # Eureka Server (Service Discovery)
+  - type: web
+    name: eureka-server
+    runtime: java
+    context: eureka-server
+    buildCommand: mvn clean package -DskipTests
+    startCommand: java -jar target/*.jar
+    envVars:
+      - key: SERVER_PORT
+        value: 8761
+    healthCheckPath: /actuator/health
+
+  # Config Server (Centralized Configuration)
+  - type: web
+    name: config-server
+    runtime: java
+    context: .
+    buildCommand: mvn -f config-server/pom.xml clean package -DskipTests
+    startCommand: java -jar config-server/target/*.jar
+    envVars:
+      - key: SERVER_PORT
+        value: 8888
+      - key: SPRING_PROFILES_ACTIVE
+        value: native
+      - key: SPRING_CLOUD_CONFIG_SERVER_NATIVE_SEARCH_LOCATIONS
+        value: file:./config-repo
+    healthCheckPath: /actuator/health
+
+  # ---------------------------------------------------
+  # 2. BACKEND MICROSERVICES
+  # ---------------------------------------------------
+
+  # User Service
+  - type: web
+    name: user-service
+    runtime: java
+    context: user-service
+    buildCommand: mvn clean package -DskipTests
+    startCommand: java -jar target/*.jar
+    envVars:
+      - key: SERVER_PORT
+        value: 8085
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: cinema-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: cinema-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: cinema-db
+          property: password
+      - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+        fromService:
+          type: web
+          name: eureka-server
+          property: host
+          envVarKey: EUREKA_HOST
+        value: http://${EUREKA_HOST}:8761/eureka/
+      - key: SPRING_CONFIG_IMPORT
+        fromService:
+          type: web
+          name: config-server
+          property: host
+          envVarKey: CONFIG_HOST
+        value: optional:configserver:http://${CONFIG_HOST}:8888/
+    healthCheckPath: /actuator/health
+
+  # Catalog Service
+  - type: web
+    name: catalog-service
+    runtime: java
+    context: catalog-service
+    buildCommand: mvn clean package -DskipTests
+    startCommand: java -jar target/*.jar
+    envVars:
+      - key: SERVER_PORT
+        value: 8082
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: cinema-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: cinema-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: cinema-db
+          property: password
+      - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+        value: http://eureka-server:8761/eureka/ 
+        # Note: Render allows internal DNS by service name.
+      - key: SPRING_CONFIG_IMPORT
+        value: optional:configserver:http://config-server:8888/
+    healthCheckPath: /actuator/health
+
+  # Seat Service
+  - type: web
+    name: seat-service
+    runtime: java
+    context: seat-service
+    buildCommand: mvn clean package -DskipTests
+    startCommand: java -jar target/*.jar
+    envVars:
+      - key: SERVER_PORT
+        value: 8083
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: cinema-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: cinema-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: cinema-db
+          property: password
+      - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+        value: http://eureka-server:8761/eureka/
+      - key: SPRING_CONFIG_IMPORT
+        value: optional:configserver:http://config-server:8888/
+    healthCheckPath: /actuator/health
+
+  # Booking Service
+  - type: web
+    name: booking-service
+    runtime: java
+    context: booking-service
+    buildCommand: mvn clean package -DskipTests
+    startCommand: java -jar target/*.jar
+    envVars:
+      - key: SERVER_PORT
+        value: 8084
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: cinema-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: cinema-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: cinema-db
+          property: password
+      - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+        value: http://eureka-server:8761/eureka/
+      - key: SPRING_CONFIG_IMPORT
+        value: optional:configserver:http://config-server:8888/
+    healthCheckPath: /actuator/health
+
+  # ---------------------------------------------------
+  # 3. FRONTEND
+  # ---------------------------------------------------
+  
+  - type: static
+    name: cinema-frontend
+    context: frontend
+    buildCommand: npm install && npm run build
+    publishDir: dist
+    envVars:
+      - key: VITE_USER_SERVICE_URL
+        fromService:
+          type: web
+          name: user-service
+          property: url
+      - key: VITE_CATALOG_SERVICE_URL
+        fromService:
+          type: web
+          name: catalog-service
+          property: url
+      - key: VITE_SEAT_SERVICE_URL
+        fromService:
+          type: web
+          name: seat-service
+          property: url
+      - key: VITE_BOOKING_SERVICE_URL
+        fromService:
+          type: web
+          name: booking-service
+          property: url
+
+databases:
+  - name: cinema-db
+    databaseName: cinema
+    user: cinema_user
+    plan: free
+
