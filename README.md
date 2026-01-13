@@ -12,7 +12,7 @@ Projenin amacı, ölçeklenebilir, bakımı kolay ve modern teknolojilerle donat
 Sistem aşağıdaki temel bileşenlerden oluşur:<br>
 
 | Servis Adı          | Port   | Teknoloji               | Açıklama                                                           |<br>
-|---------------------|--------|-------------------------|--------------------------------------------------------------------|<br>
+|-------------------------|-------------------------|-------------------------|-------------------------|<br>
 | **Frontend**        | `5173` | React, Vite, Tailwind   | Kullanıcı arayüzü. Şık ve responsive tasarım.                      |<br>
 | **API Gateway**     | `8080` | Spring Cloud Gateway    | (Opsiyonel) Tüm trafiği yöneten giriş kapısı.                      |<br>
 | **Eureka Server**   | `8761` | Netflix Eureka          | Servislerin birbirini bulmasını sağlayan "Telefon Rehberi".        |<br>
