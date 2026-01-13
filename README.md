@@ -9,18 +9,18 @@ Projenin amacı, ölçeklenebilir, bakımı kolay ve modern teknolojilerle donat
 
 ## 🏗️ Mimari Yapı (Architecture)
 
-Sistem aşağıdaki temel bileşenlerden oluşur:
+Sistem aşağıdaki temel bileşenlerden oluşur:<br>
 
-| Servis Adı | Port | Teknoloji | Açıklama |
-|/---|---|---|---|
-| **Frontend** | `5173` | React, Vite, Tailwind | Kullanıcı arayüzü. Şık ve responsive tasarım. |
-| **API Gateway** | `8080` | Spring Cloud Gateway | (Opsiyonel) Tüm trafiği yöneten giriş kapısı. |
-| **Eureka Server** | `8761` | Netflix Eureka | Servislerin birbirini bulmasını sağlayan "Telefon Rehberi". |
-| **Config Server** | `8888` | Spring Cloud Config | Tüm servislerin ayarlarını tek yerden yönetir. |
-| **User Service** | `8085` | Spring Boot, JWT | Kayıt, Giriş ve Güvenlik (Authentication/Authorization) işlemleri. |
-| **Catalog Service** | `8082` | Spring Boot, PostgreSQL | Filmler ve Seansların (Showtimes) listelenmesi. |
-| **Seat Service** | `8083` | Spring Boot, PostgreSQL | Koltuk düzeni, kilitleme mekanizması ve anlık durum takibi. |
-| **Booking Service** | `8084` | Spring Boot, PostgreSQL | Rezervasyon süreci, ödeme simülasyonu ve bilet oluşturma. |
+| Servis Adı          | Port   | Teknoloji               | Açıklama                                                           |<br>
+|---------------------|--------|-------------------------|--------------------------------------------------------------------|<br>
+| **Frontend**        | `5173` | React, Vite, Tailwind   | Kullanıcı arayüzü. Şık ve responsive tasarım.                      |<br>
+| **API Gateway**     | `8080` | Spring Cloud Gateway    | (Opsiyonel) Tüm trafiği yöneten giriş kapısı.                      |<br>
+| **Eureka Server**   | `8761` | Netflix Eureka          | Servislerin birbirini bulmasını sağlayan "Telefon Rehberi".        |<br>
+| **Config Server**   | `8888` | Spring Cloud Config     | Tüm servislerin ayarlarını tek yerden yönetir.                     |<br>
+| **User Service**    | `8085` | Spring Boot, JWT        | Kayıt, Giriş ve Güvenlik (Authentication/Authorization) işlemleri. |<br>
+| **Catalog Service** | `8082` | Spring Boot, PostgreSQL | Filmler ve Seansların (Showtimes) listelenmesi.                    |<br>
+| **Seat Service**    | `8083` | Spring Boot, PostgreSQL | Koltuk düzeni, kilitleme mekanizması ve anlık durum takibi.        |<br>
+| **Booking Service** | `8084` | Spring Boot, PostgreSQL | Rezervasyon süreci, ödeme simülasyonu ve bilet oluşturma.          |<br>
 
 ---
 
@@ -53,7 +53,7 @@ npm install
 # Uygulamayı başlatın
 npm run dev
 ```
-Uygulama şuradan erişilebilir: **http://localhost:5173**
+Uygulama şuradan erişilebilir: **http://localhost:5173](https://cinema-frontend-c241.onrender.com/showtimes**
 
 ---
 
