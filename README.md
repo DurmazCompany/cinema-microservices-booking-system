@@ -53,7 +53,7 @@ npm install
 # Uygulamayı başlatın
 npm run dev
 ```
-Uygulama şuradan erişilebilir: **http://localhost:5173](https://cinema-frontend-c241.onrender.com/showtimes**
+Uygulama şuradan erişilebilir: **https://cinema-frontend-c241.onrender.com/showtimes**
 
 ---
 
